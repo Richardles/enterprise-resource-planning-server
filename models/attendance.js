@@ -12,16 +12,15 @@ const AttendanceSchema = new mongoose.Schema({
     clockInTime:{
         type: String,
         required: true,
-        unique: true,
     },
     clockOutTime:{
         type: String,
         required: true,
     },
     attendDate:{
-        type: Date,
+        type: String,
         required: true,
-        default: new Date(),
+        default: new Date().toUTCString(),
     },
     description:{
         type: String,

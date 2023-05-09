@@ -61,10 +61,45 @@ app.post("/insertEmployee", async (req, res)=>{
 
 app.post("/insertAttendance", async (req, res)=>{
     const attendance = req.body
-    const oldAttendance = await AttendanceModel.findOne({employeeEmail: req.body.employeeEmail})
+    const oldAttendance = await AttendanceModel.findOne({
+        employeeEmail: req.body.employeeEmail,
+        attendDate: req.body.attendDate
+    })
     const newAttendance = new AttendanceModel(attendance)
     console.log(newAttendance);
-    console.log('===');
+    console.log('=-=');
+    console.log(oldAttendance);
+    if(oldAttendance == null){
+        try {
+            await newAttendance.save()
+            res.json(newAttendance)
+        } catch (error) {
+            res.json(error)
+        }
+    }else{
+        if (oldAttendance.clockInTime == '-'){
+            const update = {
+                clockInTime: attendance.clockInTime,
+                description: attendance.description
+            }
+            const updated = await AttendanceModel.findOneAndUpdate({employeeEmail: req.body.employeeEmail},update,{new: true})
+        }else{
+            const update = {description: attendance.description}
+            const updated = await AttendanceModel.findOneAndUpdate({employeeEmail: req.body.employeeEmail},update,{new: true})
+        }
+        res.json("data existed")
+    }
+})
+
+app.post("/updateOneAttendance", async(req, res)=>{
+    const attendance = req.body
+    const oldAttendance = await AttendanceModel.findOne({
+        employeeEmail: req.body.employeeEmail,
+        attendDate: req.body.attendDate
+    })
+    const newAttendance = new AttendanceModel(attendance)
+    console.log(newAttendance);
+    console.log('====');
     console.log(oldAttendance);
     if(oldAttendance === null){
         try {
@@ -74,7 +109,11 @@ app.post("/insertAttendance", async (req, res)=>{
             res.json(error)
         }
     }else{
-        res.json("data existed")
+        const update = {
+            clockOutTime: attendance.clockOutTime,
+            description: attendance.description
+        }
+        const updated = await AttendanceModel.findOneAndUpdate({employeeEmail: req.body.employeeEmail},update,{new: true})
     }
 })
 

@@ -88,12 +88,19 @@ app.post("/insertAttendance", async (req, res)=>{
                 clockInTime: attendance.clockInTime,
                 description: attendance.description
             }
-            const updated = await AttendanceModel.findOneAndUpdate({employeeEmail: req.body.employeeEmail},update,{new: true})
+            const updated = await AttendanceModel.findOneAndUpdate({
+                employeeEmail: req.body.employeeEmail,
+                attendDate: req.body.attendDate
+            },update,{new: true})
+            res.json(updated)
         }else{
             const update = {description: attendance.description}
-            const updated = await AttendanceModel.findOneAndUpdate({employeeEmail: req.body.employeeEmail},update,{new: true})
+            const updated = await AttendanceModel.findOneAndUpdate({
+                employeeEmail: req.body.employeeEmail,
+                attendDate: req.body.attendDate
+            },update,{new: true})
+            res.json(updated)
         }
-        res.json("data existed")
     }
 })
 
@@ -119,7 +126,11 @@ app.post("/updateOneAttendance", async(req, res)=>{
             clockOutTime: attendance.clockOutTime,
             description: attendance.description
         }
-        const updated = await AttendanceModel.findOneAndUpdate({employeeEmail: req.body.employeeEmail},update,{new: true})
+        const updated = await AttendanceModel.findOneAndUpdate({
+            employeeEmail: req.body.employeeEmail,
+            attendDate: req.body.attendDate
+        },update,{new: true})
+        res.json(updated)
     }
 })
 

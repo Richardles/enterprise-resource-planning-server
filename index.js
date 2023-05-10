@@ -47,6 +47,12 @@ app.post("/getOneEmployee", async (req, res)=>{
     }
 })
 
+app.post("/getAttendanceByEmail", async (req, res)=>{
+    const attendances = await AttendanceModel.find({employeeEmail: req.body.employeeEmail})
+    res.json(attendances)
+    console.log(attendances);
+})
+
 app.post("/insertEmployee", async (req, res)=>{
     const employee = req.body
     console.log(employee);
@@ -69,7 +75,7 @@ app.post("/insertAttendance", async (req, res)=>{
     console.log(newAttendance);
     console.log('=-=');
     console.log(oldAttendance);
-    if(oldAttendance == null){
+    if(oldAttendance === null){
         try {
             await newAttendance.save()
             res.json(newAttendance)
